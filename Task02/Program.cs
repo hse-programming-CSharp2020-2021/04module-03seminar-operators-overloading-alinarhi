@@ -77,6 +77,11 @@ namespace Task02
         {
             return first.Dencity > second.Dencity;
         }
+
+        public override string ToString()
+        {
+            return Area + " " + Population;
+        }
     }
 
     class MainClass
