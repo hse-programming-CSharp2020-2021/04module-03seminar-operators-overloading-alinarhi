@@ -23,20 +23,36 @@ namespace Task01
 {
     class Bread
     {
-        public int Weight { get; set; }
-
+        private int weight;
+        public int Weight
+        {
+            get
+            {
+                return weight;
+            }
+            set
+            {
+                if (value > 0)
+                    weight = value;
+                else
+                {
+                    throw new ArgumentException();
+                }
+            }
+        }
         public static Sandwich operator +(Bread bread, Butter butter)
         {
             return new Sandwich { Weight = bread.Weight + butter.Weight };
         }
     }
-    class Butter
+    class Butter : Bread
     {
-        public int Weight { get; set; }
+        
     }
-    class Sandwich
+
+    class Sandwich : Bread
     {
-        public int Weight { get; set; }
+
     }
 
     class MainClass
