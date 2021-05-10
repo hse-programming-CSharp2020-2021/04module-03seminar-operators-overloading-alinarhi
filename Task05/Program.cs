@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 /*
 Источник: https://metanit.com/
@@ -26,13 +27,46 @@
 
 namespace Task05
 {
-    class Dollar
+    abstract class Currency
     {
-        public decimal Sum { get; set; }
+        private decimal sum;
+        public decimal Sum
+        {
+            get
+            {
+                return sum;
+            }
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException();
+                }
+                sum = value;
+            }
+        }
+
+        public override string ToString()
+        {
+            return $"{Sum:f2}";
+        }
     }
-    class Euro
+
+    class Dollar : Currency
     {
-        public decimal Sum { get; set; }
+
+        public static explicit operator Dollar(Euro euro)
+        {
+            return new Dollar { Sum = euro.Sum * 1.14m };
+        }
+    }
+    class Euro : Currency
+    {
+
+        public static implicit operator Euro(Dollar dol)
+        {
+            return new Euro { Sum = dol.Sum / 1.14m };
+        }
     }
 
     class MainClass
@@ -41,7 +75,11 @@ namespace Task05
         {
             try
             {
-
+                CultureInfo.CurrentCulture = new CultureInfo("ru-RU");
+                var dol = new Dollar { Sum = decimal.Parse(Console.ReadLine()) };
+                var eu = new Euro { Sum = decimal.Parse(Console.ReadLine()) };
+                Console.WriteLine((Euro)dol);
+                Console.WriteLine((Dollar)eu);
             }
             catch (ArgumentException)
             {

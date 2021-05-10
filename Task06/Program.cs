@@ -35,11 +35,72 @@ public readonly struct Fraction
 
     public Fraction(int numerator, int denominator)
     {
-        num = numerator;
-        den = denominator;
+        if (denominator != 0)
+        {
+            if (denominator > 0)
+            {
+                num = numerator;
+                den = denominator;
+            }
+            else
+            {
+                num = -numerator;
+                den = -denominator;
+            }
+
+            var gcd = FindGCD(Math.Abs(num), Math.Abs(den));
+            num /= gcd;
+            den /= gcd;
+        }
+        else
+        {
+            throw new ArgumentException();
+        }
     }
 
-    public override string ToString() => $"{num}/{den}";
+    public static int FindGCD(int a, int b)
+    {
+        return b == 0 ? a : FindGCD(b, a % b);
+    }
+    public static Fraction operator +(Fraction a, Fraction b)
+    {
+        return new Fraction(a.num * b.den + b.num * a.den,
+            a.den * b.den);
+    }
+
+    public static Fraction operator -(Fraction a, Fraction b)
+    {
+        return new Fraction(a.num * b.den - b.num * a.den,
+            a.den * b.den);
+    }
+    public static Fraction operator *(Fraction a, Fraction b)
+    {
+        return new Fraction(a.num * b.num, a.den * b.den);
+    }
+    public static Fraction operator /(Fraction a, Fraction b)
+    {
+        if (b.num != 0)
+        {
+            return new Fraction(a.num * b.den, a.den * b.num);
+        }
+        else
+        {
+            throw new DivideByZeroException();
+        }
+    }
+
+    public override string ToString()
+    {
+        if (num == 0)
+        {
+            return "0";
+        }
+        if (den == 1)
+        {
+            return $"{num}";
+        }
+        return $"{num}/{den}";
+    }
 }
 
 public static class OperatorOverloading
@@ -48,7 +109,15 @@ public static class OperatorOverloading
     {
         try
         {
-            
+            var input1 = Console.ReadLine().Split('/');
+            var input2 = Console.ReadLine().Split('/');
+            var a = new Fraction(int.Parse(input1[0]), int.Parse(input1[1]));
+            var b = new Fraction(int.Parse(input2[0]), int.Parse(input2[1]));
+            Console.WriteLine(a + b);
+            Console.WriteLine(a - b);
+            Console.WriteLine(a * b);
+            Console.WriteLine(a / b);
+
         }
         catch (ArgumentException)
         {
