@@ -57,10 +57,11 @@ namespace Task04
     {
         public static void Main(string[] args)
         {
-            var cel = new Celcius { Gradus = double.Parse(Console.ReadLine()) };
             var far = new Fahrenheit { Gradus = double.Parse(Console.ReadLine()) };
-            Console.WriteLine((Fahrenheit)cel);
+            var cel = new Celcius { Gradus = double.Parse(Console.ReadLine()) };
             Console.WriteLine((Celcius)far);
+            Console.WriteLine((Fahrenheit)cel);
+
         }
     }
 }
