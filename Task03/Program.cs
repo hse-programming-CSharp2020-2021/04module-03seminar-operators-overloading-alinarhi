@@ -53,7 +53,11 @@ namespace Task03
 
         public static explicit operator int(Clock clock)
         {
-            return clock.Hours * 60;
+            if (int.MaxValue / 60.0 >= clock.Hours)
+            {
+                return clock.Hours * 60;
+            }
+            throw new ArgumentException();
         }
 
         public override string ToString()
