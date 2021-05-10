@@ -29,36 +29,26 @@ namespace Task03
 {
     class Clock
     {
-        private int hours;
-        public int Hours
+        public Clock(int hours)
         {
-            get
+            if (hours < 0)
             {
-                return hours;
+                throw new ArgumentException();
             }
-            set
-            {
-                if (value < 0)
-                {
-                    throw new ArgumentException();
-                }
-                hours = value;
-            }
+            Hours = hours;
         }
+        public int Hours { get; set; }
 
         public static implicit operator Clock(int minutes)
         {
-            return new Clock { Hours = minutes / 60 };
+            if (minutes < 0)
+            {
+                throw new ArgumentException();
+            }
+            return new Clock(minutes / 60);
         }
 
-        public static explicit operator int(Clock clock)
-        {
-            if (int.MaxValue / 60.0 >= clock.Hours)
-            {
-                return clock.Hours * 60;
-            }
-            throw new ArgumentException();
-        }
+        public static explicit operator int(Clock clock) => clock.Hours * 60;
 
         public override string ToString()
         {
@@ -68,13 +58,13 @@ namespace Task03
 
     class MainClass
     {
-        public static void Main(string[] args)
+        public static void Main()
         {
-            int minute = int.Parse(Console.ReadLine());
             try
             {
-                Clock clock = new Clock { Hours = int.Parse(Console.ReadLine()) };
-                Console.WriteLine((Clock)minute);
+                int minutes = int.Parse(Console.ReadLine());
+                Clock clock = new Clock(int.Parse(Console.ReadLine()));
+                Console.WriteLine((Clock)minutes);
                 Console.WriteLine((int)clock);
             }
             catch (ArgumentException)
